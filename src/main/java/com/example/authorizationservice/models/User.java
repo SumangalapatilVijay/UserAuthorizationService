@@ -1,6 +1,4 @@
 package com.example.authorizationservice.models;
-
-import com.example.authorizationservice.dtos.SignUpRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Entity;
