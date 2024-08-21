@@ -21,12 +21,4 @@ public class User extends BaseModel {
     @ManyToMany(fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
-
-    public static User getUser(SignUpRequestDto userRequestDto) {
-        User user = new User();
-        user.setEmail(userRequestDto.getEmail());
-        user.setPasswordSalt(userRequestDto.getPasswordSalt());
-        user.setRoles(userRequestDto.getRoles());
-        return user;
-    }
 }
