@@ -5,6 +5,6 @@ import com.example.authorizationservice.exception.UserAleadyExistWithThisEmailEx
 import com.example.authorizationservice.exception.UserEmailNotFoundException;
 
 public interface AuthService {
-    public boolean signUp(String email, String password) throws UserAleadyExistWithThisEmailException;
-    public String login(String email, String password) throws UserEmailNotFoundException, PasswordInCorrectMatchException;
+     boolean signUp(String email, String password) throws UserAleadyExistWithThisEmailException;
+     String login(String email, String password) throws UserEmailNotFoundException, PasswordInCorrectMatchException;
 }
