@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,4 +18,13 @@ public class User extends BaseModel {
     @ManyToMany(fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
+
+    public User(String email, String password) {
+        this.email = email;
+        this.passwordSalt = password;
+    }
+
+    public User() {
+
+    }
 }

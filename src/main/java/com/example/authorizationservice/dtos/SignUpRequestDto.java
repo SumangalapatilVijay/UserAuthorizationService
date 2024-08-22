@@ -9,7 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class SignUpRequestDto {
-    private String passwordSalt;
+    private String password;
     private String email;
     private Set<Role> roles = new HashSet<>();
 }
