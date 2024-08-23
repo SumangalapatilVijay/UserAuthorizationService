@@ -9,8 +9,7 @@ import com.example.authorizationservice.models.SessionStatus;
 import com.example.authorizationservice.models.User;
 import com.example.authorizationservice.repositories.SessionRepository;
 import com.example.authorizationservice.repositories.UserRepository;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,11 +48,16 @@ public class AuthServiceImpl implements AuthService {
         }
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if(bcryptPasswordEncoder.matches(password,optionalUser.get().getPasswordSalt())) {
-             token = createJwtToken(optionalUser.get().getEmail(),optionalUser.get().getId(),new ArrayList<>());
+            token = createJwtToken(optionalUser.get().getEmail(),optionalUser.get().getId(),new ArrayList<>());
             Session session = new Session();
             session.setStatus(SessionStatus.ACTIVE);
             session.setId(optionalUser.get().getId());
-            session.setUser(optionalUser.get());
+
+            Calendar c= Calendar.getInstance();
+            c.add(Calendar.DATE, 30);
+            Date d=c.getTime();
+            session.setExpiringAt(d);
+            session.setCreatedAt(new Date());
             session.setToken(token);
              sessionRepository.save(session);
         } else {
@@ -61,7 +65,21 @@ public class AuthServiceImpl implements AuthService {
         }
         return token;
     }
-protected String createJwtToken(String email, Long userId, List<Role> roles) {
+
+    @Override
+    public boolean validate(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    protected String createJwtToken(String email, Long userId, List<Role> roles) {
         String token = null;
         JwtBuilder builder = Jwts.builder();
     Map<String,Object> jwtClaims = new HashMap<>();
@@ -78,4 +96,5 @@ protected String createJwtToken(String email, Long userId, List<Role> roles) {
     token = builder.compact();
         return token;
 }
+
 }

@@ -1,6 +1,7 @@
 package com.example.authorizationservice.controllers;
 
 import com.example.authorizationservice.dtos.*;
+import com.example.authorizationservice.dtos.ResponseStatus;
 import com.example.authorizationservice.exception.PasswordInCorrectMatchException;
 import com.example.authorizationservice.exception.UserAleadyExistWithThisEmailException;
 import com.example.authorizationservice.exception.UserEmailNotFoundException;
@@ -10,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/auth")
@@ -61,6 +59,12 @@ public class AuthController {
         }
         return response;
     }
+
+    @GetMapping("/validate")
+    public boolean validate(@RequestParam String token) {
+        return authService.validate(token);
+    }
+
 
 
 }
